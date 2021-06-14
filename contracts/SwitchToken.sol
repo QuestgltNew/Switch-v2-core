@@ -1,6 +1,6 @@
 pragma solidity =0.5.16;
 
-import '../libraries/SafeMath.sol';
+import './libraries/SafeMath.sol';
 
 contract SwitchToken {
     using SafeMath for uint256;
