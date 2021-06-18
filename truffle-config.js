@@ -23,7 +23,7 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
-const { kovanprojectId,projectId, mnemonic } = require('./secrets.json');
+const { INFURA_API_KEY,ETHERSCAN_API_KEY, MNEMONIC } = require('./secrets.json');
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
@@ -61,7 +61,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
-      provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/${projectId}`),
+      provider: () => new HDWalletProvider(MNEMONIC, `https://ropsten.infura.io/v3/${INFURA_API_KEY}`),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
@@ -69,8 +69,16 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
     kovan: {
-      provider: () => new HDWalletProvider(mnemonic, `https://kovan.infura.io/v3/${kovanprojectId}`),
+      provider: () => new HDWalletProvider(MNEMONIC, `https://kovan.infura.io/v3/${INFURA_API_KEY}`),
       network_id: 42,       // Ropsten's id
+      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(MNEMONIC, `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`),
+      network_id: 4,       // Rinkeby's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
@@ -88,7 +96,9 @@ module.exports = {
   mocha: {
     // timeout: 100000
   },
-
+  api_keys: {
+    etherscan: ETHERSCAN_API_KEY
+  },
   // Configure your compilers
   compilers: {
     solc: {
@@ -103,6 +113,7 @@ module.exports = {
       // }
     }
   },
+ 
 
   // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
   //
@@ -112,5 +123,8 @@ module.exports = {
 
   db: {
     enabled: false
-  }
+  },
+  plugins: [
+    'truffle-plugin-verify'
+  ]
 };
